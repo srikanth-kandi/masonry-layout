@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Masonry Layout with Infinite Scroll</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="container" id="imageContainer">
+        <div><img src="img/normal1.png"/></div>
+        <div class="vertical"><img src="img/vertical1.png"/></div>
+        <div class="horizontal"><img src="img/horizontal1.png"/></div>
+        <div><img src="img/normal2.png"/></div>
+        <div><img src="img/normal3.png"/></div>
+        <div class="big"><img src="img/big1.png"/></div>
+        <div><img src="img/normal4.png"/></div>
+        <div class="vertical"><img src="img/vertical2.png"/></div>
+        <div><img src="img/normal5.png"/></div>
+        <div class="horizontal"><img src="img/horizontal2.png"/></div>
+        <div><img src="img/normal6.png"/></div>
+        <div class="big"><img src="img/big2.png"/></div>
+        <div><img src="img/normal7.png"/></div>
+        <div class="horizontal"><img src="img/horizontal3.png"/></div>
+        <div><img src="img/normal8.png"/></div>
+        <div class="big"><img src="img/big3.png"/></div>
+        <div><img src="img/normal9.png"/></div>
+        <div class="vertical"><img src="img/vertical3.png"/></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        const images = [
+            { src: 'img/normal1.png', class: '' },
+            { src: 'img/vertical1.png', class: 'vertical' },
+            { src: 'img/horizontal1.png', class: 'horizontal' },
+            { src: 'img/normal2.png', class: '' },
+            { src: 'img/normal3.png', class: '' },
+            { src: 'img/big1.png', class: 'big' },
+            { src: 'img/normal4.png', class: '' },
+            { src: 'img/vertical2.png', class: 'vertical' },
+            { src: 'img/normal5.png', class: '' },
+            { src: 'img/horizontal2.png', class: 'horizontal' },
+            { src: 'img/normal6.png', class: '' },
+            { src: 'img/big2.png', class: 'big' },
+            { src: 'img/normal7.png', class: '' },
+            { src: 'img/horizontal3.png', class: 'horizontal' },
+            { src: 'img/normal8.png', class: '' },
+            { src: 'img/big3.png', class: 'big' },
+            { src: 'img/normal9.png', class: '' },
+            { src: 'img/vertical3.png', class: 'vertical' }
+        ];
+
+        const container = document.getElementById('imageContainer');
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createImageDiv(image) {
+            const div = document.createElement('div');
+            if (image.class) div.classList.add(image.class);
+            const img = document.createElement('img');
+            img.src = image.src;
+            div.appendChild(img);
+            return div;
+        }
+
+        function appendRandomImages() {
+            const shuffledImages = shuffle([...images]);
+            shuffledImages.forEach(image => {
+                const imageDiv = createImageDiv(image);
+                container.appendChild(imageDiv);
+            });
+        }
+
+        function checkScrollPosition() {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                appendRandomImages();
+            }
+        }
+
+        window.addEventListener('scroll', checkScrollPosition);
+
+        new Sortable(container, {
+            animation: 150,
+            ghostClass: 'ghost',
+        });
+
+        // Initial load of images
+        appendRandomImages();
+    </script>
+</body>
+</html>
